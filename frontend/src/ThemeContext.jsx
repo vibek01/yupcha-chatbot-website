@@ -6,6 +6,7 @@ const ThemeContext = createContext();
 export function ThemeProvider(props) {
   const [theme, setTheme] = createSignal('dark');
 
+  
   const toggleTheme = () => {
     const newTheme = theme() === 'light' ? 'dark' : 'light';
     setTheme(newTheme);

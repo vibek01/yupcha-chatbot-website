@@ -8,7 +8,6 @@ from app.services.post_service import create_post
 from app.schemas.post import PostCreate
 from app.core.config import settings
 
-
 async def handle_chat(db: AsyncSession, message: str) -> ChatResponse:
     # If user uses the "post this: Title - Content" pattern, create a Post in the DB
     m = re.match(r'post this\s*:\s*(.+?)\s*-\s*(.+)', message, re.IGNORECASE)

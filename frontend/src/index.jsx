@@ -7,6 +7,7 @@ import PostsPage from './routes/PostsPage';
 import { ThemeProvider } from './ThemeContext';
 import './index.css';
 
+
 render(
   () => (
     <ThemeProvider>

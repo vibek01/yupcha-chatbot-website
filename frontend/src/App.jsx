@@ -3,9 +3,12 @@ import { A, useLocation } from '@solidjs/router';
 import ThemeToggle from './components/ThemeToggle';
 import { useTheme } from './ThemeContext';
 
+
 export default function AppLayout(props) {
   const loc = useLocation();
   const { theme } = useTheme();
+
+
 
   return (
     <div class="app-layout" data-theme={theme()}>

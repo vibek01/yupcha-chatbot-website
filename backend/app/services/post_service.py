@@ -12,6 +12,7 @@ async def create_post(db: AsyncSession, post_in: PostCreate) -> PostRead:
     await db.refresh(post)
     return PostRead.from_orm(post)
 
+
 async def get_posts(db: AsyncSession) -> List[PostRead]:
     stmt = select(Post).order_by(Post.created_at.desc())
     result = await db.execute(stmt)
