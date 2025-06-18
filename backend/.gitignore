@@ -1,0 +1,50 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+.env/
+env.bak/
+venv.bak/
+
+# dotenv environment variables
+.env
+.env.*
+
+# VS Code settings
+.vscode/
+
+# macOS & Linux files
+.DS_Store
+*.swp
+
+# Pytest cache
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# Coverage reports
+htmlcov/
+coverage.xml
+*.cover
+*.py,cover
+.cache
+
+# Logs
+*.log
+
+# Database (optional, if using SQLite)
+*.sqlite3
+*.db
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
