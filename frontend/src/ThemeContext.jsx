@@ -3,7 +3,6 @@ import { createContext, createSignal, useContext, onMount } from 'solid-js';
 
 const ThemeContext = createContext();
 
-
 export function ThemeProvider(props) {
   const [theme, setTheme] = createSignal('dark');
 
@@ -13,7 +12,6 @@ export function ThemeProvider(props) {
     localStorage.setItem('theme', newTheme);
   };
 
-  
   onMount(() => {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
