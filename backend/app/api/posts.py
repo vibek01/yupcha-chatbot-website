@@ -10,6 +10,8 @@ from app.schemas.post import PostRead
 
 router = APIRouter(prefix="/api/posts", tags=["posts"])
 
+
 @router.get("/", response_model=List[PostRead])
 async def read_posts(db: AsyncSession = Depends(get_db)):
     return await get_posts(db)
+

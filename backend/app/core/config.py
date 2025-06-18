@@ -16,6 +16,7 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = True
 
+
     @property
     def sqlalchemy_database_url(self) -> str:
         """
