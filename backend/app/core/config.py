@@ -5,9 +5,6 @@ import re
 
 class Settings(BaseSettings):
     database_url:      str = Field(..., env="DATABASE_URL")
-    openai_api_key:    str = Field(..., env="OPENAI_API_KEY")
-
-    # New OpenRouter AI settings
     openrouter_api_key: str = Field(..., env="OPENROUTER_API_KEY")
     openrouter_model:   str = Field(..., env="OPENROUTER_MODEL")
     openrouter_url:     str = Field(..., env="OPENROUTER_URL")
