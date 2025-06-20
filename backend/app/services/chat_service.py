@@ -1,23 +1,34 @@
 import re
 import httpx
 from sqlmodel.ext.asyncio.session import AsyncSession
-
+from fastapi import HTTPException
 
 from app.schemas.chat import ChatResponse
-from app.services.post_service import create_post
-from app.schemas.post import PostCreate
+# ── REPLACE create_post import with send_tweet
+from app.services.post_service import send_tweet  
 from app.core.config import settings
 
 async def handle_chat(db: AsyncSession, message: str) -> ChatResponse:
-    # If user uses the "post this: Title - Content" pattern, create a Post in the DB
+    """
+    If the user says “post this: Title - Content”, forward `Content` to Twitter‑Clone.
+    Otherwise proxy to OpenRouter.
+    """
     m = re.match(r'post this\s*:\s*(.+?)\s*-\s*(.+)', message, re.IGNORECASE)
     if m:
         title, content = m.groups()
-        post = await create_post(db, PostCreate(title=title, content=content))
-        return ChatResponse(reply=f"✅ Post created with ID {post.id}")
+        # 1) Send to external Twitter‑Clone API
+        try:
+            resp = await send_tweet(content)
+        except HTTPException as e:
+            # bubble up any external‑API errors
+            raise
 
+        # 2) Confirm to the user
+        return ChatResponse(
+            reply=f"✅ Tweet posted! External service replied: {resp}"
+        )
 
-    # Otherwise, proxy the message to OpenRouter
+    # ── Otherwise, fall back to OpenRouter AI ──────────────────────────────
     payload = {
         "model": settings.openrouter_model,
         "messages": [

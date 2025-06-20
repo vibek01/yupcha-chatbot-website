@@ -1,17 +1,17 @@
 # app/api/posts.py
 
-from fastapi import APIRouter, Depends
-from typing import List
-from sqlmodel.ext.asyncio.session import AsyncSession
-
-from app.db.deps import get_db
-from app.services.post_service import get_posts
-from app.schemas.post import PostRead
+from fastapi import APIRouter
+from typing import Any
+from app.schemas.post import PostCreate
+from app.services.post_service import send_tweet
 
 router = APIRouter(prefix="/api/posts", tags=["posts"])
 
-
-@router.get("/", response_model=List[PostRead])
-async def read_posts(db: AsyncSession = Depends(get_db)):
-    return await get_posts(db)
-
+@router.post("/", response_model=Any)
+async def create_tweet(post: PostCreate):
+    """
+    Receive { title, content } from the frontend,
+    forward `content` to the Twitter‑Clone service,
+    and return whatever JSON they give us.
+    """
+    return await send_tweet(post.content)

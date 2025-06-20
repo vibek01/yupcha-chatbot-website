@@ -1,20 +1,23 @@
-from typing import List
-from sqlmodel import select
-from sqlmodel.ext.asyncio.session import AsyncSession
+# app/services/post_service.py
 
-from app.db.models import Post
-from app.schemas.post import PostCreate, PostRead
+import httpx
+from fastapi import HTTPException
+from app.core.config import settings
 
-async def create_post(db: AsyncSession, post_in: PostCreate) -> PostRead:
-    post = Post.from_orm(post_in)
-    db.add(post)
-    await db.commit()
-    await db.refresh(post)
-    return PostRead.from_orm(post)
+async def send_tweet(content: str) -> dict:
+    """
+    Forwards `content` to the external Twitter‑Clone API.
+    """
+    url = f"{settings.twitterclone_base_url}/post_tweet"
+    headers = {"api-key": settings.twitterclone_api_key}
+    payload = {"content": content}
 
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(url, json=payload, headers=headers, timeout=10.0)
 
-async def get_posts(db: AsyncSession) -> List[PostRead]:
-    stmt = select(Post).order_by(Post.created_at.desc())
-    result = await db.execute(stmt)
-    posts = result.scalars().all()
-    return [PostRead.from_orm(p) for p in posts]
+    if resp.status_code != 200:
+        raise HTTPException(
+            status_code=resp.status_code,
+            detail=f"Twitter‑Clone API error: {resp.text}"
+        )
+    return resp.json()
