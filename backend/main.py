@@ -12,7 +12,7 @@ app = FastAPI(title="Chat & Posts API")
 # ─── CORS ──────────────────────────────────────────────────────────
 # Allow your Solid.js frontend (running on localhost:3000) to talk to this API
 origins = [
-    "https://yupcha-chatbot-website.pages.dev/"
+    "https://yupcha-chatbot-website.pages.dev"
 ]
 
 
