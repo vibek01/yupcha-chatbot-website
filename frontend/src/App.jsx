@@ -8,8 +8,6 @@ export default function AppLayout(props) {
   const loc = useLocation();
   const { theme } = useTheme();
 
-
-
   return (
     <div class="app-layout" data-theme={theme()}>
       <nav class="glass">
