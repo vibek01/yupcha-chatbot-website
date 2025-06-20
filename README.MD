@@ -19,4 +19,3 @@ Supabase (Hosted on Vercel — for user data, session management, logs, etc.)
 Frontend → Deployed on Cloudflare Pages
 
 Backend → Hosted on Render
-
