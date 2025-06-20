@@ -1,34 +1,49 @@
+# backend/app/services/chat_service.py
+
 import re
 import httpx
 from sqlmodel.ext.asyncio.session import AsyncSession
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 
 from app.schemas.chat import ChatResponse
-# ── REPLACE create_post import with send_tweet
 from app.services.post_service import send_tweet  
 from app.core.config import settings
 
+# Allow dot matching so newlines count; capture title up to dash OR newline
+POST_REGEX = re.compile(
+    r'post this\s*:\s*(?P<title>.+?)(?:\s*-\s*|\s*\n)(?P<content>.+)', 
+    re.IGNORECASE | re.DOTALL
+)
+
 async def handle_chat(db: AsyncSession, message: str) -> ChatResponse:
     """
-    If the user says “post this: Title - Content”, forward `Content` to Twitter‑Clone.
-    Otherwise proxy to OpenRouter.
+    If user says "post this: Title - Content"  OR
+    "post this: Title\\nContent",
+    forward Title + Content to Twitter‑Clone.
+    Otherwise, proxy to OpenRouter.
     """
-    m = re.match(r'post this\s*:\s*(.+?)\s*-\s*(.+)', message, re.IGNORECASE)
+    m = POST_REGEX.match(message)
     if m:
-        title, content = m.groups()
-        # 1) Send to external Twitter‑Clone API
-        try:
-            resp = await send_tweet(content)
-        except HTTPException as e:
-            # bubble up any external‑API errors
-            raise
+        title = m.group("title").strip()
+        content = m.group("content").strip()
 
-        # 2) Confirm to the user
+        # Combine title + content into the single 'content' payload
+        to_send = f"**{title}**\n\n{content}"
+
+        try:
+            resp = await send_tweet(to_send)
+        except HTTPException as exc:
+            # Return a chat reply that includes the error details
+            raise HTTPException(
+                status_code=exc.status_code,
+                detail=f"Failed to post tweet: {exc.detail}"
+            )
+
         return ChatResponse(
-            reply=f"✅ Tweet posted! External service replied: {resp}"
+            reply=f"✅ Tweet posted!\n\nExternal API response:\n{resp}"
         )
 
-    # ── Otherwise, fall back to OpenRouter AI ──────────────────────────────
+    # ── Fallback to OpenRouter AI ────────────────────────────────────────
     payload = {
         "model": settings.openrouter_model,
         "messages": [
