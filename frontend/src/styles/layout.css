@@ -17,6 +17,7 @@
   min-height: 600px; /* Ensure minimum height */
 }
 
+
 @media (max-width: 1024px) {
   .generator-container {
     grid-template-columns: 1fr;
