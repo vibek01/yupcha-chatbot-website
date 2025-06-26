@@ -39,3 +39,4 @@ async def update_tweet(db: AsyncSession, tweet_id: int, content: str):
     await db.commit()
     await db.refresh(tweet)
     return tweet
+
