@@ -11,7 +11,7 @@ export default ({ mode }) => {
       proxy: {
         // Any request to /api/* → forwarded to backend at localhost:8000
         '/api': {
-          target: 'http://localhost:8000',
+          target: 'https://yupcha-chatbot-website.onrender.com',
           changeOrigin: true,
           // no rewrite: "/api/foo" → "http://localhost:8000/api/foo"
         },
