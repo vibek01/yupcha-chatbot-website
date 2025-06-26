@@ -20,6 +20,7 @@ async def generate_tweet_topic(req: GenerateRequest) -> str:
         f"Use a {req.tone} tone. "
     )
 
+
     if req.hashtags_include:
         inc = " ".join(f"#{tag.strip()}" for tag in req.hashtags_include)
         prompt += f"Include only these hashtags: {inc}. "
