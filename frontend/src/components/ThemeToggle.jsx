@@ -1,4 +1,3 @@
-// src/components/ThemeToggle.jsx
 import { useTheme } from '../ThemeContext';
 
 export default function ThemeToggle() {

@@ -1,23 +1,22 @@
+// vite.config.js
 import { defineConfig, loadEnv } from 'vite'
 import solid from 'vite-plugin-solid'
 
 export default ({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), 'VITE_')
-
+  // We no longer need VITE_API_URL for local dev
   return defineConfig({
     plugins: [solid()],
     server: {
       port: 3000,
       proxy: {
+        // Any request to /api/* → forwarded to backend at localhost:8000
         '/api': {
-          target: env.VITE_API_URL.replace(/\/api$/, ''),
+          target: 'http://localhost:8000',
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, '')
-        }
-      }
+          // no rewrite: "/api/foo" → "http://localhost:8000/api/foo"
+        },
+      },
     },
-    define: {
-      'process.env': {}
-    }
+    define: { 'process.env': {} },
   })
 }

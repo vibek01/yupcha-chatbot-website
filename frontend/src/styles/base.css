@@ -1,0 +1,106 @@
+/* 1) Even softer light-mode palette */
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --secondary: #edf2f7;
+  --text: #1e293b;
+  --text-light: #475569;
+  --bg: #dbdaf7;
+  --card-bg: #ffffff;
+  --border: #87898d;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+  --transition: all 0.3s ease-in-out;
+  --gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --border-gradient: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+}
+
+/* 2) Dark-mode – zero white flashes */
+[data-theme="dark"] {
+  --primary: #818cf8;
+  --primary-hover: #6366f1;
+  --secondary: #111827;
+  --text: #f1f5f9;
+  --text-light: #94a3b8;
+  --bg: #111827;
+  --card-bg: #1f2937;
+  --border: #374151;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --gradient: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+  --border-gradient: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+}
+
+/* 3) Base resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: var(--transition);
+  min-height: 100vh;
+  padding: 1rem 5rem;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navigation */
+nav.glass {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+[data-theme="dark"] nav.glass {
+  background-color: rgba(17, 24, 39, 0.8);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: var(--transition);
+}
+
+.nav-links a:hover {
+  background-color: rgba(79, 70, 229, 0.15);
+  color: var(--primary);
+}
+
+.nav-links a.active {
+  background: var(--gradient);
+  color: white;
+}
+
+/* Main Container */
+.container {
+  padding: 3rem 2rem; /* Increased padding */
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+}

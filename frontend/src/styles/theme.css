@@ -1,0 +1,47 @@
+/* Theme Toggle */
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.theme-toggle:hover { 
+  background-color: rgba(99,102,241,0.1); 
+}
+.theme-toggle svg { 
+  fill: var(--text); 
+}
+
+/* Sun & Moon Icons */
+.sun-rays { 
+  opacity: 1; 
+  transition: var(--transition); 
+}
+[data-theme="dark"] .sun-rays { 
+  opacity: 0; 
+}
+
+.moon-body { 
+  opacity: 0; 
+  fill: var(--text); 
+  transition: var(--transition); 
+}
+[data-theme="dark"] .moon-body { 
+  opacity: 1; 
+}
+
+.moon-crater { 
+  opacity: 0; 
+  fill: var(--text-light); 
+  transition: var(--transition); 
+}
+[data-theme="dark"] .moon-crater { 
+  opacity: 1; 
+}
