@@ -135,6 +135,7 @@ export default function TweetGenerator() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(current()),
       });
+      
       if (!res.ok) throw new Error();
       await res.json();
       refetchDrafts();
