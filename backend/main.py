@@ -14,7 +14,7 @@ app.router.redirect_slashes = False
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://yupcha-chatbot-website.pages.dev"],
+    allow_origins=["http://localhost:3000", "https://yupcha-chatbot-website.pages.dev/"],
     allow_origin_regex=r"https://.*\.pages\.dev",
     allow_credentials=True,
     allow_methods=["*"],
