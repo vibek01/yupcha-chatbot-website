@@ -14,7 +14,7 @@ export default function DraftCard(props) {
 
   const title = tweet.topic.split(' ').slice(0, 5).join(' ');
 
-  const handleMouseMove = e => {
+  const handleMouseMove = (e) => {
     if (!cardRef) return;
     const rect = cardRef.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -41,12 +41,16 @@ export default function DraftCard(props) {
           content: content().trim(),
         }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null);
+        console.error('PATCH /api/tweets error:', errBody);
+        throw new Error(errBody?.detail || `HTTP ${res.status}`);
+      }
       await res.json();
       refetchDrafts();
       setEditing(false);
-    } catch {
-      setError('Save failed');
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -64,12 +68,16 @@ export default function DraftCard(props) {
           content: content().trim(),
         }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null);
+        console.error('POST /api/posts error in DraftCard:', errBody);
+        throw new Error(errBody?.detail || `HTTP ${res.status}`);
+      }
       await res.json();
       refetchDrafts();
       refetchPosted();
-    } catch {
-      setError('Post failed');
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
