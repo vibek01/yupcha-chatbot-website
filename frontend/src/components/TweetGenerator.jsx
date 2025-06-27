@@ -5,7 +5,8 @@ import DraftCard from './DraftCard';
 import PostedCard from './PostedCard';
 import LiquidLoader from './LiquidLoader';
 
-const API = '/api';
+// Pull the full base URL (including “/api”) from your env
+const API = import.meta.env.VITE_API_URL;
 
 export default function TweetGenerator() {
   const [topic, setTopic] = createSignal('');
@@ -22,11 +23,12 @@ export default function TweetGenerator() {
   const [hashtagsInclude, setHashtagsInclude] = createSignal('');
   const [url, setUrl] = createSignal('');
 
-  // Pagination state
+  // Pagination
   const [draftsPage, setDraftsPage] = createSignal(1);
   const [postedPage, setPostedPage] = createSignal(1);
   const itemsPerPage = 6;
 
+  // Fetch drafts & posts from your Render backend
   const [drafts, { refetch: refetchDrafts }] = createResource(
     () => fetch(`${API}/tweets?posted=false`).then(r => (r.ok ? r.json() : [])),
     { initialValue: [] }
@@ -36,22 +38,18 @@ export default function TweetGenerator() {
     { initialValue: [] }
   );
 
-  // Paginated data
+  // Pagination helpers
   const paginatedDrafts = () => {
     const start = (draftsPage() - 1) * itemsPerPage;
     return drafts()?.slice(start, start + itemsPerPage) || [];
   };
-
   const paginatedPosted = () => {
     const start = (postedPage() - 1) * itemsPerPage;
     return posted()?.slice(start, start + itemsPerPage) || [];
   };
-
-  // Total pages calculation
   const totalDraftPages = () => Math.ceil((drafts()?.length || 0) / itemsPerPage);
   const totalPostedPages = () => Math.ceil((posted()?.length || 0) / itemsPerPage);
 
-  // Reset pagination when tab changes
   createEffect(() => {
     setDraftsPage(1);
     setPostedPage(1);
@@ -68,17 +66,16 @@ export default function TweetGenerator() {
       previewTextarea.style.height = `${previewTextarea.scrollHeight}px`;
     }
   };
-
   onMount(() => {
     window.addEventListener('resize', resizeTextarea);
     return () => window.removeEventListener('resize', resizeTextarea);
   });
-
-  const handleContentChange = (content) => {
+  const handleContentChange = content => {
     setCurrent({ ...current(), content });
     setTimeout(resizeTextarea, 0);
   };
 
+  // Generate via your deployed FastAPI
   const generate = async () => {
     if (!topic().trim() || loadingGen()) return;
     setLoadingGen(true);
@@ -90,7 +87,6 @@ export default function TweetGenerator() {
         length: length(),
         tone: tone(),
       };
-
       if (includeHashtagsChecked()) {
         const list = hashtagsInclude()
           .split(',')
@@ -98,7 +94,6 @@ export default function TweetGenerator() {
           .filter(Boolean);
         if (list.length) payload.hashtags_include = list;
       }
-
       if (url().trim()) payload.url = url().trim();
 
       const res = await fetch(`${API}/generate`, {
@@ -135,13 +130,12 @@ export default function TweetGenerator() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(current()),
       });
-      
       if (!res.ok) throw new Error();
       await res.json();
       refetchDrafts();
       setCurrent(null);
       setRightPanelTab('settings');
-      setDraftsPage(1); // Reset to first page after adding new draft
+      setDraftsPage(1);
     } catch {
       setError('Failed to save draft');
     } finally {
@@ -167,7 +161,7 @@ export default function TweetGenerator() {
       refetchPosted();
       setCurrent(null);
       setRightPanelTab('settings');
-      setPostedPage(1); // Reset to first page after posting
+      setPostedPage(1);
     } catch {
       setError('Failed to post');
     } finally {
@@ -175,29 +169,18 @@ export default function TweetGenerator() {
     }
   };
 
-  // Pagination handlers
+  // Pagination controls
   const nextDraftsPage = () => {
-    if (draftsPage() < totalDraftPages()) {
-      setDraftsPage(p => p + 1);
-    }
+    if (draftsPage() < totalDraftPages()) setDraftsPage(p => p + 1);
   };
-
   const prevDraftsPage = () => {
-    if (draftsPage() > 1) {
-      setDraftsPage(p => p - 1);
-    }
+    if (draftsPage() > 1) setDraftsPage(p => p - 1);
   };
-
   const nextPostedPage = () => {
-    if (postedPage() < totalPostedPages()) {
-      setPostedPage(p => p + 1);
-    }
+    if (postedPage() < totalPostedPages()) setPostedPage(p => p + 1);
   };
-
   const prevPostedPage = () => {
-    if (postedPage() > 1) {
-      setPostedPage(p => p - 1);
-    }
+    if (postedPage() > 1) setPostedPage(p => p - 1);
   };
 
   return (
@@ -221,7 +204,9 @@ export default function TweetGenerator() {
                 disabled={loadingGen() || loadingAction()}
                 class="redesigned-input"
               />
-              <label for="topic-input" class="floating-label">Enter Your Topic Here</label>
+              <label for="topic-input" class="floating-label">
+                Enter Your Topic Here
+              </label>
             </div>
             <button
               onClick={generate}
@@ -255,7 +240,10 @@ export default function TweetGenerator() {
               <div class="settings-pane">
                 <h3>Customize Your Tweet</h3>
                 <div class="setting">
-                  <label>Tweet Length: <span class="length-value">{length()} words</span></label>
+                  <label>
+                    Tweet Length:
+                    <span class="length-value">{length()} words</span>
+                  </label>
                   <div class="slider-container">
                     <input
                       type="range"
@@ -318,12 +306,15 @@ export default function TweetGenerator() {
 
             <Show when={rightPanelTab() === 'preview'}>
               <div class="preview-pane">
-                <Show when={current() || loadingGen()} fallback={
-                  <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} class="preview-message">
-                    <h3>Your Generated Tweet</h3>
-                    <p>Enter a topic and generate your tweet</p>
-                  </Motion.div>
-                }>
+                <Show
+                  when={current() || loadingGen()}
+                  fallback={
+                    <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} class="preview-message">
+                      <h3>Your Generated Tweet</h3>
+                      <p>Enter a topic and generate your tweet</p>
+                    </Motion.div>
+                  }
+                >
                   <Show when={!loadingGen()} fallback={<LiquidLoader />}>
                     <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} class="tweet-card preview-card">
                       <h4>{current().topic}</h4>
@@ -357,29 +348,44 @@ export default function TweetGenerator() {
       </div>
 
       <div class="tabs">
-        <button class={activeTab() === 'drafts' ? 'active' : ''} onClick={() => setActiveTab('drafts')}>
+        <button
+          class={activeTab() === 'drafts' ? 'active' : ''}
+          onClick={() => setActiveTab('drafts')}
+        >
           Drafts ({drafts()?.length})
         </button>
-        <button class={activeTab() === 'posted' ? 'active' : ''} onClick={() => setActiveTab('posted')}>
+        <button
+          class={activeTab() === 'posted' ? 'active' : ''}
+          onClick={() => setActiveTab('posted')}
+        >
           Posted ({posted()?.length})
         </button>
       </div>
 
       <div class="tweet-grid">
-        <Show when={activeTab() === 'drafts'} fallback={
-          <Show when={posted()?.length > 0} fallback={
-            <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} class="empty-state">
-              <p>No posts yet</p>
-            </Motion.div>
-          }>
-            <For each={paginatedPosted()}>{t => <PostedCard tweet={t} />}</For>
-          </Show>
-        }>
-          <Show when={drafts()?.length > 0} fallback={
-            <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} class="empty-state">
-              <p>No drafts found</p>
-            </Motion.div>
-          }>
+        <Show
+          when={activeTab() === 'drafts'}
+          fallback={
+            <Show
+              when={posted()?.length > 0}
+              fallback={
+                <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} class="empty-state">
+                  <p>No posts yet</p>
+                </Motion.div>
+              }
+            >
+              <For each={paginatedPosted()}>{t => <PostedCard tweet={t} />}</For>
+            </Show>
+          }
+        >
+          <Show
+            when={drafts()?.length > 0}
+            fallback={
+              <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} class="empty-state">
+                <p>No drafts found</p>
+              </Motion.div>
+            }
+          >
             <For each={paginatedDrafts()}>
               {t => (
                 <DraftCard
@@ -396,20 +402,18 @@ export default function TweetGenerator() {
       {/* Pagination Controls */}
       <Show when={activeTab() === 'drafts' && totalDraftPages() > 1}>
         <div class="pagination-controls">
-          <button 
-            onClick={prevDraftsPage} 
+          <button
+            onClick={prevDraftsPage}
             disabled={draftsPage() === 1}
             class="pagination-btn prev-btn"
           >
             &larr; Prev
           </button>
-          
           <div class="page-info">
             Page {draftsPage()} of {totalDraftPages()}
           </div>
-          
-          <button 
-            onClick={nextDraftsPage} 
+          <button
+            onClick={nextDraftsPage}
             disabled={draftsPage() === totalDraftPages()}
             class="pagination-btn next-btn"
           >
@@ -420,20 +424,18 @@ export default function TweetGenerator() {
 
       <Show when={activeTab() === 'posted' && totalPostedPages() > 1}>
         <div class="pagination-controls">
-          <button 
-            onClick={prevPostedPage} 
+          <button
+            onClick={prevPostedPage}
             disabled={postedPage() === 1}
             class="pagination-btn prev-btn"
           >
             &larr; Prev
           </button>
-          
           <div class="page-info">
             Page {postedPage()} of {totalPostedPages()}
           </div>
-          
-          <button 
-            onClick={nextPostedPage} 
+          <button
+            onClick={nextPostedPage}
             disabled={postedPage() === totalPostedPages()}
             class="pagination-btn next-btn"
           >
