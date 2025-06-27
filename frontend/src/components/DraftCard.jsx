@@ -1,7 +1,8 @@
-import { createSignal, Show, onMount } from 'solid-js';
+// File: src/components/DraftCard.jsx
+import { createSignal, Show } from 'solid-js';
 import { Motion } from 'solid-motionone';
 
-const API = '/api';
+const API = import.meta.env.VITE_API_URL;
 
 export default function DraftCard(props) {
   const { tweet, refetchDrafts, refetchPosted } = props;
@@ -13,15 +14,13 @@ export default function DraftCard(props) {
 
   const title = tweet.topic.split(' ').slice(0, 5).join(' ');
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = e => {
     if (!cardRef) return;
-    
     const rect = cardRef.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
-    cardRef.style.setProperty("--mouse-x", `${x}px`);
-    cardRef.style.setProperty("--mouse-y", `${y}px`);
+    cardRef.style.setProperty('--mouse-x', `${x}px`);
+    cardRef.style.setProperty('--mouse-y', `${y}px`);
   };
 
   const toggleEdit = () => {
@@ -32,11 +31,15 @@ export default function DraftCard(props) {
 
   const save = async () => {
     setLoading(true);
+    setError('');
     try {
       const res = await fetch(`${API}/tweets/${tweet.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic: tweet.topic, content: content().trim() }),
+        body: JSON.stringify({
+          topic: tweet.topic,
+          content: content().trim(),
+        }),
       });
       if (!res.ok) throw new Error();
       await res.json();
@@ -51,11 +54,15 @@ export default function DraftCard(props) {
 
   const post = async () => {
     setLoading(true);
+    setError('');
     try {
       const res = await fetch(`${API}/posts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: tweet.topic, content: content().trim() }),
+        body: JSON.stringify({
+          title: tweet.topic,
+          content: content().trim(),
+        }),
       });
       if (!res.ok) throw new Error();
       await res.json();
@@ -109,10 +116,18 @@ export default function DraftCard(props) {
           </div>
 
           <div class="card-actions">
-            <button onClick={editing() ? save : toggleEdit} disabled={loading()} class="edit-btn">
+            <button
+              onClick={editing() ? save : toggleEdit}
+              disabled={loading()}
+              class="edit-btn"
+            >
               {editing() ? 'Save' : 'Edit'}
             </button>
-            <button onClick={post} disabled={editing() || loading()} class="post-btn">
+            <button
+              onClick={post}
+              disabled={editing() || loading()}
+              class="post-btn"
+            >
               Post
             </button>
           </div>
