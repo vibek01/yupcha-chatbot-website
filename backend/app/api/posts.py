@@ -18,11 +18,7 @@ async def create_and_post(
     post: PostCreate,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    1) Send the tweet content to the external API (send_tweet)
-    2) Store the tweet in our DB (create_tweet)
-    3) Mark the original as posted (mark_posted)
-    """
+
     try:
         # 1) send to Twitter/OpenRouter/etc
         resp = await send_tweet(post.content)

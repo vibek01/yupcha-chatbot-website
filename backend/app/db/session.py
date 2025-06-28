@@ -6,8 +6,6 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
 
 # Create the async engine.
-# SSL is handled in your URL (?sslmode=require&supa=...), so no need for explicit SSL args.
-# We disable asyncpg's prepared-statement cache via connect_args.
 async_engine = create_async_engine(
     settings.sqlalchemy_database_url,
     echo=True,

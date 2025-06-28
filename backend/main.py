@@ -20,7 +20,7 @@ app.router.redirect_slashes = False
 # === CORS MIDDLEWARE ===
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],            # <-- you can restrict this to your two origins if you like
+    allow_origins=["https://yupcha-chatbot-website.pages.dev/"],            
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

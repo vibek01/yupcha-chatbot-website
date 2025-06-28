@@ -4,11 +4,8 @@ from fastapi import HTTPException
 from app.core.config import settings
 
 async def send_tweet(content: str) -> dict:
-    """
-    Forwards `content` to the external Twitter‑Clone API.
-    Payload must match:
-      { "username": "...", "text": "..." }
-    """
+    
+    # Forwards `content` to the external Twitter‑Clone API.
     # extract username from your API key (before the underscore)
     username = settings.twitterclone_api_key.split("_", 1)[0]
 
