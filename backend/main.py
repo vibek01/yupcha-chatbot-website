@@ -4,8 +4,8 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.config import settings
-from app.db.session import init_db
+from app.core.config  import settings
+from app.db.session   import init_db
 from app.api.generate import router as generate_router
 from app.api.posts    import router as posts_router
 from app.api.tweets   import router as tweets_router
