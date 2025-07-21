@@ -36,14 +36,6 @@
 
 ---
 
-## 📸 Screenshots
-
-| Home | Generate Tweet | Drafts & Posts |
-|------|----------------|----------------|
-| ![](https://your-link.com/home.png) | ![](https://your-link.com/generate.png) | ![](https://your-link.com/drafts.png) |
-
----
-
 ## 📦 Local Development
 
 ### 1️⃣ Clone the Repository
@@ -56,12 +48,15 @@ cd yupcha-tweet-generator
 cd frontend
 npm install
 npm run dev
-
+```
+```bash
 3️⃣ Backend Setup
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
 
+```bash
 ⚙️ Environment Variables
 Create a .env file in both the frontend/ and backend/ directories.
 
@@ -84,8 +79,10 @@ VITE_API_URL=https://yupcha-chatbot-website.onrender.com/api
 
 # Twitter Clone API key (used for frontend requests if needed)
 TWITTER_API_KEY=vibek_07370767ec46c404c434e06d5d5237e7
+```
+---
 
-🧠 How It Works
+# 🧠 How It Works
 User lands on the homepage.
 
 Enters a prompt → AI generates tweet content.
