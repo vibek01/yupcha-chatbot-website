@@ -1,67 +1,71 @@
-Yupcha Tweet Generator Website
-Yupcha Tweet Generator Website is a sleek, AI-powered platform that enables users to generate high-quality social media posts and publish them directly to a Twitter clone developed by Yupcha Softwares. Built with performance and simplicity in mind, it leverages cutting-edge technologies and modern UI to deliver a seamless content creation experience — no authentication required.
+# 📢 Yupcha Tweet Generator Website
 
-✨ Key Features
-🔮 AI-Powered Tweet Generation using Mistral 24B (fine-tuned) via OpenRouter
+**Yupcha Tweet Generator** is a sleek, AI-powered platform that enables users to effortlessly generate and publish high-quality tweets to a custom-built **Twitter clone by Yupcha Softwares**. With a modern UI, lightning-fast backend, and no authentication required, it simplifies content creation through the power of fine-tuned AI.
 
-✍️ Create, Edit, and Save posts as Drafts
+---
 
-📢 Publish posts directly to Yupcha’s internal Twitter clone
+## ✨ Features
 
-🔁 View All Posts & Drafts instantly on the frontend
+- 🔮 AI-based tweet generation using **Mistral 24B** (fine-tuned) via OpenRouter  
+- 📝 Create, edit, and save tweets as **drafts**
+- 📤 **Publish** tweets directly to Yupcha’s Twitter clone
+- 📃 View both **drafts** and **posted tweets** on the frontend
+- 💻 **No authentication** – instant usage for all users
+- 🎨 Clean, modern, and **unique UI** built with Solid.js
 
-💻 No Authentication – Instant access for all users
+---
 
-🎨 Modern, Unique & Sleek Design using Solid.js
+## 🛠️ Tech Stack
 
-🚀 Tech Stack
-Layer	Technology
-Frontend	Solid.js, Vite
-Backend	FastAPI
-AI Model	OpenRouter - Mistral 24B (fine-tuned)
-Database	Supabase
-Hosting	Cloudflare Pages (Frontend), Render (Backend), Supabase (DB on Vercel infra)
+| Layer       | Technology                                       |
+|-------------|--------------------------------------------------|
+| Frontend    | [Solid.js](https://solidjs.com/), [Vite](https://vitejs.dev/) |
+| Backend     | [FastAPI](https://fastapi.tiangolo.com/)         |
+| AI Model    | [OpenRouter](https://openrouter.ai/) – Mistral 24B (fine-tuned) |
+| Database    | [Supabase](https://supabase.com/)                |
+| Deployment  | Cloudflare Pages (Frontend), Render (Backend), Supabase (Vercel-hosted) |
 
-🌐 Live Demo
-🔗 Live App: https://yupcha-chatbot-website.pages.dev/
-(Note: Posts are visible immediately after submission. Drafts are stored for persistent editing.)
+---
 
-📸 Screenshots
-Home Page	Generate Tweet	Drafts & Posts
+## 🌐 Live Demo
 
-📦 Local Development
-1. Clone the Repo
-bash
-Copy
-Edit
+🔗 **Live App:** [https://yupcha-chatbot-website.pages.dev](https://yupcha-chatbot-website.pages.dev)
+
+> ✅ Posts appear instantly after submission.  
+> 📝 Drafts are stored persistently and editable anytime.
+
+---
+
+## 📸 Screenshots
+
+| Home | Generate Tweet | Drafts & Posts |
+|------|----------------|----------------|
+| ![](https://your-link.com/home.png) | ![](https://your-link.com/generate.png) | ![](https://your-link.com/drafts.png) |
+
+---
+
+## 📦 Local Development
+
+### 1️⃣ Clone the Repository
+
+```bash
 git clone https://github.com/yourusername/yupcha-tweet-generator.git
 cd yupcha-tweet-generator
-2. Frontend Setup
-bash
-Copy
-Edit
+
+2️⃣ Frontend Setup
 cd frontend
 npm install
 npm run dev
-3. Backend Setup
-bash
-Copy
-Edit
+
+3️⃣ Backend Setup
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
-⚙️ Environment Variables
-Create the following .env files for the frontend and backend.
 
-Frontend (.env)
-env
-Copy
-Edit
-VITE_BACKEND_URL=https://your-backend.render.app
-Backend (.env)
-env
-Copy
-Edit
+⚙️ Environment Variables
+Create a .env file in both the frontend/ and backend/ directories.
+
+🔧 backend/.env
 # PostgreSQL DB via Supabase (asyncpg URI)
 DATABASE_URL="postgresql+asyncpg://postgres.yjwpjrjbnnthwoievjfa:ZntQ2XGrsoNxfY5Y@aws-0-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require"
 
@@ -70,29 +74,31 @@ OPENROUTER_API_KEY="sk-or-v1-a54e438f8a22ffb6ac7f8ca1c7fb90c8fb38f5faf9a870c17b4
 OPENROUTER_BASE_URL="https://openrouter.ai/api/v1"
 OPENROUTER_MODEL="mistralai/mistral-small-3.2-24b-instruct:free"
 
-# Twitter Clone Server Endpoint (Yupcha Internal API)
+# Yupcha Twitter Clone Server API
 TWITTERCLONE_BASE_URL="https://twitterclone-server-2xz2.onrender.com"
 TWITTERCLONE_API_KEY="vibek_07370767ec46c404c434e06d5d5237e7"
 
+🌐 frontend/.env
 # FastAPI backend endpoint
 VITE_API_URL=https://yupcha-chatbot-website.onrender.com/api
 
 # Twitter Clone API key (used for frontend requests if needed)
 TWITTER_API_KEY=vibek_07370767ec46c404c434e06d5d5237e7
 
-
 🧠 How It Works
-User visits the homepage.
+User lands on the homepage.
 
-Enters a prompt to generate a tweet using Mistral 24B (OpenRouter).
+Enters a prompt → AI generates tweet content.
 
-Chooses to Save as Draft or Post to Yupcha's internal Twitter clone.
+Chooses to save as draft or publish directly.
 
-All drafts and posted tweets are listed on the main UI for review and editing.
+All drafts and posts are listed and editable from the frontend.
+
+No login required. Data is stored anonymously in Supabase.
 
 🔒 Auth & Security
-No authentication is required.
+✅ No authentication system.
 
-Each user's interaction is stored under a general anonymous scope.
+🗃️ All data is stored in Supabase under a shared, general scope.
 
-Content is saved to Supabase, which handles real-time syncing and storage.
+🔁 Real-time syncing between frontend and backend enabled via REST.
