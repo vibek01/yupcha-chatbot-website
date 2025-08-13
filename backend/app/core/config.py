@@ -1,20 +1,24 @@
 # app/core/config.py
 
-from pydantic_settings import BaseSettings  # <-- FIX: Import from pydantic_settings
+# Import SettingsConfigDict, which is the new way to configure settings models.
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 import re
 
 class Settings(BaseSettings):
-    database_url:          str = Field(..., env="DATABASE_URL")
-    twitterclone_base_url: str = Field(..., env="TWITTERCLONE_BASE_URL")
-    twitterclone_api_key:  str = Field(..., env="TWITTERCLONE_API_KEY")
-    openrouter_api_key:    str = Field(..., env="OPENROUTER_API_KEY")
-    openrouter_url:        str = Field(..., env="OPENROUTER_BASE_URL")
-    openrouter_model:      str = Field(..., env="OPENROUTER_MODEL")
+    # These fields still define the required environment variables.
+    database_url:          str
+    twitterclone_base_url: str
+    twitterclone_api_key:  str
+    openrouter_api_key:    str
+    openrouter_url:        str
+    openrouter_model:      str
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = SettingsConfigDict(
+        env_file='.env',
+        env_file_encoding='utf-8',
+        case_sensitive=True
+    )
 
     @property
     def sqlalchemy_database_url(self) -> str:
@@ -25,4 +29,5 @@ class Settings(BaseSettings):
             url = url.split("?", 1)[0]
         return url
 
+# clear instructions on how to find and load your secrets.
 settings = Settings()
