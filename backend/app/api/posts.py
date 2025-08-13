@@ -18,7 +18,6 @@ async def create_and_post(
     post: PostCreate,
     db: AsyncSession = Depends(get_db)
 ):
-
     try:
         # 1) send to Twitter/OpenRouter/etc
         resp = await send_tweet(post.content)
@@ -34,8 +33,7 @@ async def create_and_post(
     except Exception as e:
         # Log the full traceback so you can inspect Render logs
         logger.exception("Error in create_and_post:")
-        # Return a JSON error with a 500 status so CORS headers still apply
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(e)
+            detail=f"An error occurred while posting the tweet: {e}"
         )

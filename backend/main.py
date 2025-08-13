@@ -1,7 +1,8 @@
 # File: main.py
 import uvicorn
 import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config  import settings
@@ -17,14 +18,21 @@ logger = logging.getLogger(__name__)
 app = FastAPI(title="Tweet Generator API")
 app.router.redirect_slashes = False
 
-# === CORS MIDDLEWARE ===
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://yupcha-chatbot-website.pages.dev/"],            
+    allow_origins=["https://yupcha-chatbot-website.pages.dev"], # <-- FIX: Removed trailing slash
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.exception(f"An unhandled exception occurred for request {request.url}: {exc}")
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": "An internal server error occurred."},
+    )
 
 # === ROUTERS ===
 app.include_router(generate_router, prefix="/api/generate")
