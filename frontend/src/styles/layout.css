@@ -1,4 +1,6 @@
 /* Updated layout.css */
+/* This file now only handles the main structure, leaving component-specific styles to other files. */
+
 .tweet-generator {
   display: flex;
   flex-direction: column;
@@ -9,293 +11,32 @@
 .generator-container {
   display: grid;
   gap: 2rem;
-  grid-template-columns: 40% 1fr; /* Left panel takes 40% width */
-  justify-content: center;
+  /* On desktop, use two columns. The 'minmax' function helps with responsiveness. */
+  grid-template-columns: minmax(350px, 40%) 1fr;
+  align-items: start; /* Align items to the top of their grid area */
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  min-height: 600px; /* Ensure minimum height */
+  /* FIX: Removed min-height to allow the container to be flexible. */
 }
 
-
-@media (max-width: 1024px) {
-  .generator-container {
-    grid-template-columns: 1fr;
-  }
-}
+/* FIX: All specific styles for .form-pane, .right-panel, .input-card, etc., have been removed from this file. */
+/* They are correctly handled in tweet.css, preventing conflicts. */
 
 .form-pane {
-  background-color: var(--card-bg);
-  border-radius: var(--radius);
-  /* padding: 1.5rem; */
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  /* This makes the form pane "stick" to the top when you scroll down on larger screens. */
   position: sticky;
   top: 100px;
-  z-index: 1;
-  height: fit-content;
-}
-.form-pane::before {
-  content: '';
-  position: absolute;
-  top: -2px; left: -2px; right: -2px; bottom: -2px;
-  background: var(--border-gradient);
-  border-radius: calc(var(--radius) + 2px);
-  z-index: -1;
-}
-
-.input-card {
-  background-color: var(--card-bg);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  position: relative;
-  z-index: 1;
-}
-.input-card::before {
-  content: '';
-  position: absolute;
-  top: -2px; left: -2px; right: -2px; bottom: -2px;
-  background: var(--border-gradient);
-  border-radius: calc(var(--radius) + 2px);
-  z-index: -1;
-}
-.input-card h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  height: fit-content; /* Ensures the sticky container fits its content. */
 }
 
 .right-panel {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 450px; /* Fixed height to match left panel */
+  /* The height is now determined by its content, making it flexible. */
 }
 
-.panel-tabs {
-  display: flex;
-  gap: 0.10rem;
-  background-color: var(--secondary);
-  padding: 0.25rem;
-  border-radius: var(--radius);
-  z-index: 1;
-  position: relative;
-}
-.panel-tabs::before {
-  content: '';
-  position: absolute;
-  top: -2px; left: -2px; right: -2px; bottom: -2px;
-  background: var(--border-gradient);
-  border-radius: calc(var(--radius) + 2px);
-  z-index: -1;
-}
-.panel-tabs button {
-  flex: 1;
-  padding: 0.75rem;
-  border: none;
-  background: transparent;
-  border-radius: calc(var(--radius) - 4px);
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  color: var(--text-light);
-}
-.panel-tabs button.active {
-  background-color: var(--primary);
-  color: white;
-}
-.panel-tabs button:not(.active):hover {
-  background-color: rgba(79, 70, 229, 0.1);
-  color: var(--primary);
-}
-
-.panel-content {
-  background-color: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  height: 100%; /* Take full height of parent */
-  position: relative;
-  z-index: 1;
-  overflow: hidden; /* Prevent content overflow */
-}
-.panel-content::before {
-  content: '';
-  position: absolute;
-  top: -2px; left: -2px; right: -2px; bottom: -2px;
-  background: var(--border-gradient);
-  border-radius: calc(var(--radius) + 2px);
-  z-index: -1;
-}
-
-.settings-pane,
-.preview-pane {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  height: 100%;
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.topic-input {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 1rem;
-  background-color: var(--bg);
-  color: var(--text);
-  transition: var(--transition);
-  font-family: inherit;
-  width: 100%;
-}
-.topic-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
-}
-
-.generate-btn {
-  background: var(--gradient);
-  color: white;
-  padding: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: var(--transition);
-  margin-top: 0.5rem;
-}
-.generate-btn:hover:not(:disabled) {
-  opacity: 0.9;
-  transform: translateY(-2px);
-}
-.generate-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.setting {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.slider-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.slider-container input {
-  width: 100%;
-}
-.length-value {
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.hashtags-input,
-.url-input {
-  margin-top: 0.5rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background-color: var(--bg);
-  color: var(--text);
-  font-size: 0.9rem;
-  transition: var(--transition);
-  width: 100%;
-}
-.hashtags-input:focus,
-.url-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
-}
-
-/* Preview Card */
-.tweet-card.preview-card {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  height: 100%;
-}
-.tweet-card.preview-card h4 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--primary);
-}
-.preview-content {
-  flex: 1;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-  font-size: 1rem;
-  color: var(--text);
-  resize: none;
-  transition: var(--transition);
-  font-family: inherit;
-  width: 100%;
-  min-height: 150px;
-  overflow-y: hidden;
-}
-.preview-content:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
-}
-
-.word-count {
-  color: var(--text-light);
-  font-size: 0.875rem;
-  text-align: right;
-}
-
-.actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.preview-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  gap: 1rem;
-  color: var(--text-light);
-}
-.preview-message h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-/* Tabs & Grid */
 .tabs {
   display: flex;
   gap: 0.5rem;
@@ -325,22 +66,42 @@
 .tweet-grid {
   display: grid;
   gap: 1.5rem;
+  /* Start with a single column layout. */
   grid-template-columns: 1fr;
 }
+
+/* --- Media Queries for Responsive Design --- */
+
+/* For tablets and larger screens */
 @media (min-width: 768px) {
   .tweet-grid {
+    /* Switch to a two-column grid. */
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* For larger desktop screens */
 @media (min-width: 1024px) {
   .tweet-grid {
+    /* Switch to a three-column grid. */
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Responsive Adjustments */
-@media (max-width: 1024px) {
+/* For screens smaller than 1024px (tablets and mobile) */
+@media (max-width: 1023px) {
+  .generator-container {
+    /* Switch the main generator area to a single column layout. */
+    grid-template-columns: 1fr;
+  }
+
+  .form-pane {
+    /* Un-stick the form pane on mobile so it scrolls naturally. */
+    position: static;
+  }
+
   .right-panel {
+    /* This moves the "Quick Settings / Preview" panel to the top of the "Create New Tweet" panel on mobile. */
     order: -1;
   }
 }
