@@ -7,8 +7,9 @@ from app.core.config import settings
 from app.schemas.generate import GenerateRequest
 
 # Initialize the OpenRouter client once
+# FIX: Using the correct 'openrouter_base_url' attribute.
 client = OpenAI(
-    base_url=settings.openrouter_url,
+    base_url=settings.openrouter_base_url,
     api_key=settings.openrouter_api_key,
 )
 

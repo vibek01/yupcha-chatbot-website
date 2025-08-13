@@ -20,7 +20,7 @@ app.router.redirect_slashes = False
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://yupcha-chatbot-website.pages.dev"], # <-- FIX: Removed trailing slash
+    allow_origins=["https://yupcha-chatbot-website.pages.dev", "http://localhost:3000"], # <-- FIX: Removed trailing slash
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
