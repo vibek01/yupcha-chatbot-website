@@ -1,6 +1,7 @@
 # app/core/config.py
 
-from pydantic import BaseSettings, Field
+from pydantic_settings import BaseSettings  # <-- FIX: Import from pydantic_settings
+from pydantic import Field
 import re
 
 class Settings(BaseSettings):
