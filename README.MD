@@ -41,8 +41,8 @@
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/yupcha-tweet-generator.git
-cd yupcha-tweet-generator
+git clone https://github.com/vibek01/yupcha-chatbot-website.git
+cd yupcha-chatbot-website
 
 2️⃣ Frontend Setup
 cd frontend
@@ -62,24 +62,17 @@ Create a .env file in both the frontend/ and backend/ directories.
 
 🔧 backend/.env
 # PostgreSQL DB via Supabase (asyncpg URI)
-DATABASE_URL="postgresql+asyncpg://postgres.yjwpjrjbnnthwoievjfa:ZntQ2XGrsoNxfY5Y@aws-0-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require"
+DATABASE_URL="your_supabase_url"
 
 # OpenRouter API Configuration
-OPENROUTER_API_KEY="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"
-OPENROUTER_BASE_URL="https://openrouter.ai/api/v1"
-OPENROUTER_MODEL="mistralai/mistral-small-3.2-24b-instruct:free"
-
-# Yupcha Twitter Clone Server API
-TWITTERCLONE_BASE_URL="https://twitterclone-server-2xz2.onrender.com"
-TWITTERCLONE_API_KEY="vibek_07370767ec46c404c434e06d5d5237e7"
+OPENROUTER_API_KEY="your_openrouter_api_key"
+OPENROUTER_BASE_URL="your_openrouter_base_url"
+OPENROUTER_MODEL="your_openrouter_model"
 
 🌐 frontend/.env
 # FastAPI backend endpoint
-VITE_API_URL=https://yupcha-chatbot-website.onrender.com/api
+VITE_API_URL="your_backend_url"
 
-# Twitter Clone API key (used for frontend requests if needed)
-TWITTER_API_KEY=vibek_07370767ec46c404c434e06d5d5237e7
-```
 ---
 
 # 🧠 How It Works
